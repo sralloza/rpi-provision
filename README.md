@@ -13,7 +13,10 @@ _Setup your Raspberry Pi with Raspbian without a screen, keyboard or ethernet co
 - Install tailscale to access your raspberry pi from anywhere.
 - Install docker and docker-compose to facilitate the deployment of your applications.
 
-Tested with image [`2023-12-11-raspios-bookworm-armhf-lite.img.xz`](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz)
+Tested with:
+
+- [`2023-12-11-raspios-bookworm-armhf-lite.img.xz`](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz)
+- [`2024-07-04-raspios-bookworm-arm64-lite`](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-07-04/2024-07-04-raspios-bookworm-arm64-lite.img.xz)
 
 **Index:**
 
@@ -114,6 +117,8 @@ Examples:
 
 ```shell
 # After executing the boot command, the user 'pi' will be created with password 'raspberry' (default values for the this command)
+$ rpi-provisioner find
+
 # You can use this command after changing the user and limiting the access to use ssh keys
 $ rpi-provisioner find --user $USER --ssh-key
 
@@ -143,7 +148,7 @@ Examples:
 
 ```shell
 # Create the deployer user 'deployer' with password 'p422w0rD', update the authorized_keys and set the primary interface's IP address to 192.172.0.71 (the router assigned the raspberry initially the IP address 192.168.0.144 using DCHP)
-$ rpi-provisioner layer1 --deployer-user deployer --deployer-password p422w0rD --host 192.168.0.144 --keys-uri=/path/to/public-ssh-keys.json --primary-ip 192.168.0.71
+$ rpi-provisioner layer1 --deployer-user deployer --deployer-password p422w0rD --host 192.168.0.144 --keys-uri=/path/to/public-ssh-keys.json --ip 192.168.0.71
 ```
 
 **Important: make sure that the authorized-keys file includes your public ssh key, otherwise you will lose SSH access to the raspberry.**
@@ -159,10 +164,10 @@ The layer2 command will install some useful libraries and programs. It will:
 - Install zsh
 - Install and configure oh-my-zsh
 - Install some useful oh-my-zsh plugins
-- Install and configure tailscale
-- Install docker (it will ensure that docker compose v2 is installed)
+- Install tailscale (and optionally configure it with a pregenerated auth key)
+- Install docker and docker compose v2
 
-By default (without the option --ts-auth-key) the layer2 command will just install tailscale, showing a message at the end with more instructions about how to configure it.
+By default (without the option --ts-auth-key) the layer2 command will just install tailscale, showing a message at the end with more instructions about how to configure it. If you want to configure tailscale to manage SSH access you must not use the --ts-auth-key option, but follow the instructions after the command finishes.
 
 ```shell
 # Run the layer2 command in the host 192.168.0.71 using the user 'deployer' and the ssh key
@@ -172,6 +177,8 @@ $ rpi-provisioner layer2 --host 192.168.0.71 --user deployer
 # You can generate the ssh-key from https://login.tailscale.com/admin/settings/keys
 $ rpi-provisioner layer2 --host 192.168.0.71 --user deployer --ts-auth-key s0m3-rand0m-7a1lscal3-k3y
 ```
+
+You can run this command as many times as you want. It will always update the packages and install the libraries and programs. Tailscale will only be setup once.
 
 ### authorized-keys
 

@@ -167,6 +167,7 @@ func (m *layer2Manager) installLibraries() error {
 		"libffi-dev",
 		"mailutils",
 		"mdadm",
+		"mdadm",
 		"nano",
 		"progress",
 		"ripgrep",
