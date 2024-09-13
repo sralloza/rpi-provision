@@ -120,7 +120,7 @@ func (m *layer2Manager) provisionLayer2(args Layer2Args) (Layer2Result, error) {
 	}
 
 	info.Title("Starting and setting up tailscale")
-	tailscaleStarted, needManualLogin, err := m.startAndSetupTailscale(args.TailscaleAuthKey)
+	tailscaleStarted, needManualLogin, err := m.startAndSetupTailscale(args.TailscaleAuthKey, args.User)
 	result.NeedManualTailscaleLogin = needManualLogin
 	if err != nil {
 		info.Fail()
@@ -163,9 +163,12 @@ func (m *layer2Manager) installLibraries() error {
 		"cron",
 		"curl",
 		"git",
+		"jq",
 		"libffi-dev",
 		"mailutils",
+		"mdadm",
 		"nano",
+		"progress",
 		"ripgrep",
 		"sqlite3",
 		"tcpdump",
@@ -390,7 +393,7 @@ func (m *layer2Manager) installTailscale() (bool, error) {
 
 // Starts tailscale and logs in if needed
 // Returns (tailscaleStarted, needManualLogin, error)
-func (m *layer2Manager) startAndSetupTailscale(authKey string) (bool, bool, error) {
+func (m *layer2Manager) startAndSetupTailscale(authKey, user string) (bool, bool, error) {
 	status, err := m.getTailScaleStatus()
 	if err != nil {
 		return false, false, err
@@ -414,7 +417,7 @@ func (m *layer2Manager) startAndSetupTailscale(authKey string) (bool, bool, erro
 		}
 	}
 
-	if err := m.tailscaleUp(); err != nil {
+	if err := m.tailscaleUp(user); err != nil {
 		return false, false, fmt.Errorf("error starting tailscale: %w", err)
 	}
 
