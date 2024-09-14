@@ -167,12 +167,12 @@ func (m *layer2Manager) installLibraries() error {
 		"libffi-dev",
 		"mailutils",
 		"mdadm",
-		"mdadm",
 		"nano",
 		"progress",
 		"ripgrep",
 		"sqlite3",
 		"tcpdump",
+		"tree",
 		"wget",
 	}
 	installCmd := fmt.Sprintf("apt-get install %s -y", strings.Join(libraries, " "))

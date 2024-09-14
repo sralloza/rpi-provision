@@ -54,8 +54,8 @@ func NewLayer1Cmd() *cobra.Command {
 
 	layer1Cmd.Flags().StringVar(&args.LoginUser, "login-user", "pi", "Login user")
 	layer1Cmd.Flags().StringVar(&args.LoginPassword, "login-password", "raspberry", "Login password")
-	layer1Cmd.Flags().StringVar(&args.DeployerPassword, "deployer-user", "", "Deployer user")
-	layer1Cmd.Flags().StringVar(&args.DeployerUser, "deployer-password", "", "Deployer password")
+	layer1Cmd.Flags().StringVar(&args.DeployerUser, "deployer-user", "", "Deployer user")
+	layer1Cmd.Flags().StringVar(&args.DeployerPassword, "deployer-password", "", "Deployer password")
 	layer1Cmd.Flags().StringVar(&args.RootPassword, "root-password", "", "Root password")
 	layer1Cmd.Flags().StringVar(&args.Host, "host", "", "Server host")
 	layer1Cmd.Flags().IntVar(&args.Port, "port", 22, "Server SSH port")
