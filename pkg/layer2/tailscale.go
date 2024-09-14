@@ -63,8 +63,8 @@ func (m *layer2Manager) tailscaleLogin(authKey string) error {
 	return nil
 }
 
-func (m *layer2Manager) tailscaleUp() error {
-	_, _, err := m.conn.RunSudo("tailscale up")
+func (m *layer2Manager) tailscaleUp(user string) error {
+	_, _, err := m.conn.Run(fmt.Sprintf("tailscale up --operator=%s", user))
 	if err != nil {
 		return fmt.Errorf("error starting tailscale: %w", err)
 	}
